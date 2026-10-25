@@ -1,0 +1,453 @@
+:root {
+  color-scheme: dark;
+  --bg: #180a04;
+  --bg-soft: #241009;
+  --card: #2a0f05;
+  --border: rgba(255, 138, 60, 0.18);
+  --border-strong: rgba(255, 138, 60, 0.4);
+  --text: #ffe8cc;
+  --muted: #d9a47a;
+  --orange: #ff7a1a;
+  --orange-light: #ffa04d;
+  --yellow: #ffc300;
+  --yellow-light: #ffe066;
+  --ink: #180a04;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  min-height: 100vh;
+  padding: 1.5rem 1rem 3rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+  max-width: 720px;
+}
+
+h1 {
+  color: var(--yellow);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  letter-spacing: 0.3px;
+}
+
+.back {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.back:hover {
+  border-color: var(--border-strong);
+  color: var(--yellow-light);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  padding: 0.55rem 1.2rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--orange);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+              color 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background: var(--orange-light);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.btn--ghost:hover {
+  background: transparent;
+  border-color: var(--yellow);
+  color: var(--yellow-light);
+}
+
+/* ---------- Stats ---------- */
+
+.hud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 720px;
+}
+
+.stat {
+  flex: 1 1 130px;
+  padding: 0.7rem 0.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  text-align: center;
+}
+
+.stat .label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.stat strong {
+  color: var(--yellow);
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Variants ---------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 720px;
+}
+
+.chip {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.chip:hover {
+  color: var(--yellow-light);
+  border-color: var(--border-strong);
+}
+
+.chip.is-active {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--ink);
+}
+
+/* ---------- Board ---------- */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 540px;
+}
+
+.mcard {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  perspective: 800px;
+}
+
+.board--dense {
+  gap: 0.5rem;
+}
+
+.board--dense .face {
+  font-size: clamp(1rem, 4.2vw, 1.9rem);
+}
+
+.mcard:disabled {
+  cursor: default;
+}
+
+.mcard-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.8rem;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+}
+
+.mcard.flipped .mcard-inner,
+.mcard.matched .mcard-inner {
+  transform: rotateY(180deg);
+}
+
+.face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 0.8rem;
+  font-size: clamp(1.4rem, 6vw, 2.1rem);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.face-back {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--orange);
+  font-size: 1.2rem;
+  font-weight: 900;
+  transition: border-color 0.15s ease;
+}
+
+.mcard:not(:disabled):hover .face-back {
+  border-color: var(--border-strong);
+}
+
+.face-front {
+  background: var(--bg-soft);
+  border: 1px solid var(--border-strong);
+  transform: rotateY(180deg);
+}
+
+.mcard.matched .face-front {
+  background: rgba(255, 195, 0, 0.12);
+  border-color: var(--yellow);
+}
+
+.mcard.matched {
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  50% { transform: scale(1.05); }
+}
+
+/* ---------- Achievements ---------- */
+
+.achievements {
+  width: 100%;
+  max-width: 720px;
+  padding: 1.1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+}
+
+.achievements h2 {
+  margin-bottom: 0.75rem;
+  color: var(--yellow);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.achievement-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.achievement {
+  padding: 0.28rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.achievement.unlocked {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--ink);
+}
+
+/* ---------- Win dialog ---------- */
+
+.win {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(24, 10, 4, 0.88);
+  backdrop-filter: blur(4px);
+}
+
+.win[hidden] {
+  display: none;
+}
+
+.win-panel {
+  width: 100%;
+  max-width: 340px;
+  padding: 2rem 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.win-panel h2 {
+  margin-bottom: 0.5rem;
+  color: var(--yellow);
+  font-size: 1.3rem;
+}
+
+.win-panel p {
+  margin-bottom: 1.25rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.win-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+/* ---------- Toast ---------- */
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  z-index: 200;
+  padding: 0.7rem 1.3rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.7rem;
+  background: #3a1607;
+  color: var(--yellow-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 1rem);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 480px) {
+  .board {
+    gap: 0.5rem;
+  }
+
+  .topbar {
+    justify-content: center;
+  }
+
+  .topbar h1 {
+    order: -1;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ---------- Completion badge ---------- */
+
+.completed-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 1rem;
+  border: 1px solid var(--yellow);
+  border-radius: 999px;
+  background: rgba(255, 195, 0, 0.12);
+  color: var(--yellow);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.completed-badge[hidden] {
+  display: none;
+}
+
+/* ---------- Light theme ---------- */
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fff7ee;
+  --bg-soft: #ffecd9;
+  --card: #fffdf9;
+  --border: rgba(150, 68, 18, 0.2);
+  --border-strong: rgba(150, 68, 18, 0.45);
+  --text: #2f1608;
+  --muted: #7a4a2c;
+  --orange: #c24a06;
+  --orange-light: #a84306;
+  --yellow: #9a5c00;
+  --yellow-light: #7d4a00;
+  --red: #b3261e;
+  --ink: #fffaf3;
+}
+
+[data-theme="light"] .win {
+  background: rgba(60, 30, 10, 0.35);
+}
+
+[data-theme="light"] .toast {
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 12px 30px rgba(80, 38, 12, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

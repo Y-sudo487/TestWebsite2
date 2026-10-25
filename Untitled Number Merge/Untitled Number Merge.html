@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untitled Number Merge</title>
+  <link rel="stylesheet" href="./Untitled%20Number%20Merge.css">
+  <script src="../theme.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="back" href="../index.html">← All games</a>
+    <h1>Untitled Number Merge</h1>
+    <button class="btn" id="restartBtn" type="button">New Game</button>
+  </header>
+
+  <div class="completed-badge" id="completedBadge" hidden>
+    🏆 100% Completed — every achievement unlocked
+  </div>
+
+  <section class="hud" aria-label="Game stats">
+    <div class="stat">
+      <span class="label">Score</span>
+      <strong id="score">0</strong>
+    </div>
+    <div class="stat">
+      <span class="label">Best</span>
+      <strong id="best">0</strong>
+    </div>
+    <div class="stat">
+      <span class="label">Moves</span>
+      <strong id="moves">0</strong>
+    </div>
+  </section>
+
+  <section class="chips" aria-label="Board size">
+    <button class="chip is-active" type="button" data-variant="4x4">4 × 4</button>
+    <button class="chip" type="button" data-variant="5x5">5 × 5</button>
+    <button class="chip" type="button" data-variant="6x6">6 × 6</button>
+  </section>
+
+  <main class="board-wrap">
+    <div class="board" id="board" role="application"
+         aria-label="Number merge board. Use arrow keys or W A S D to move tiles."></div>
+    <p class="hint">Arrow keys or W A S D — swipe on touch screens.</p>
+  </main>
+
+  <section class="achievements" aria-label="Achievements">
+    <h2>Achievements</h2>
+    <div class="achievement-list" id="achievementList"></div>
+  </section>
+
+  <div class="overlay" id="overlay" hidden>
+    <div class="overlay-panel" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+      <h2 id="overlayTitle"></h2>
+      <p id="overlaySummary"></p>
+      <div class="overlay-actions">
+        <button class="btn" id="primaryBtn" type="button"></button>
+        <button class="btn btn--ghost" id="secondaryBtn" type="button">New game</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./Untitled%20Number%20Merge.js"></script>
+</body>
+</html>

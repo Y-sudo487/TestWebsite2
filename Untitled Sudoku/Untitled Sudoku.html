@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untitled Sudoku</title>
+  <link rel="stylesheet" href="./Untitled%20Sudoku.css">
+  <script src="../theme.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="back" href="../index.html">← All games</a>
+    <h1>Untitled Sudoku</h1>
+    <button class="btn" id="restartBtn" type="button">New Game</button>
+  </header>
+
+  <div class="completed-badge" id="completedBadge" hidden>
+    🏆 100% Completed — every achievement unlocked
+  </div>
+
+  <section class="hud" aria-label="Game stats">
+    <div class="stat">
+      <span class="label">Difficulty</span>
+      <strong id="difficulty">Easy</strong>
+    </div>
+    <div class="stat">
+      <span class="label">Time</span>
+      <strong id="timer">0:00</strong>
+    </div>
+    <div class="stat">
+      <span class="label">Mistakes</span>
+      <strong id="mistakes">0</strong>
+    </div>
+  </section>
+
+  <section class="chips" aria-label="Variant">
+    <button class="chip" type="button" data-level="mini4">Mini 4 × 4</button>
+    <button class="chip" type="button" data-level="mini6">Mini 6 × 6</button>
+    <button class="chip is-active" type="button" data-level="easy">Easy</button>
+    <button class="chip" type="button" data-level="medium">Medium</button>
+    <button class="chip" type="button" data-level="hard">Hard</button>
+    <button class="chip" type="button" data-level="expert">Expert</button>
+  </section>
+
+  <main class="game">
+    <div class="board" id="board" role="grid"
+         aria-label="Sudoku board. Select a cell, then type or tap a number."></div>
+    <div class="pad" id="pad" aria-label="Number pad"></div>
+    <p class="hint">Click a cell, then type its number. Backspace erases.</p>
+  </main>
+
+  <section class="achievements" aria-label="Achievements">
+    <h2>Achievements</h2>
+    <div class="achievement-list" id="achievementList"></div>
+  </section>
+
+  <div class="overlay" id="overlay" hidden>
+    <div class="overlay-panel" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+      <h2 id="overlayTitle"></h2>
+      <p id="overlaySummary"></p>
+      <div class="overlay-actions">
+        <button class="btn" id="primaryBtn" type="button"></button>
+        <button class="btn btn--ghost" id="secondaryBtn" type="button">New game</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./Untitled%20Sudoku.js"></script>
+</body>
+</html>
