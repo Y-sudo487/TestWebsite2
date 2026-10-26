@@ -3,10 +3,11 @@ const completedBadges = [
   ['memory', 'memoryMatchCompleted'],
   ['merge', 'numberMergeCompleted'],
   ['sudoku', 'untitledSudokuCompleted'],
-  ['math', 'untitledMathSprintCompleted']
+  ['math', 'untitledMathSprintCompleted'],
+  ['tictactoe', 'ticTacToeCompleted']
 ];
 
-function isCompleted(key) {
+function IsCompleted(key) {
   try {
     return localStorage.getItem(key) === '1';
   } catch (e) {
@@ -16,7 +17,7 @@ function isCompleted(key) {
 
 completedBadges.forEach(([name, key]) => {
   const badge = document.querySelector(`[data-completed-badge="${name}"]`);
-  if (badge && isCompleted(key)) {
+  if (badge && IsCompleted(key)) {
     badge.hidden = false;
   }
 });

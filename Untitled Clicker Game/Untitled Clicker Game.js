@@ -15,7 +15,7 @@ const defaultState = {
   achievements: []
 };
 
-function loadState() {
+function LoadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -28,7 +28,7 @@ function loadState() {
   return { ...defaultState };
 }
 
-function saveState() {
+function SaveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch (e) {
@@ -36,7 +36,7 @@ function saveState() {
   }
 }
 
-const state = loadState();
+const state = LoadState();
 
 const counterEl = document.getElementById('counter');
 const statsEl = document.getElementById('stats');
@@ -60,58 +60,58 @@ const costs = {
 };
 
 const achievements = [
-  { id: 'firstClick', label: 'First Click', check: () => state.totalCoinsEarned > 0 },
-  { id: 'hundred', label: '100 Coins', check: () => state.totalCoinsEarned >= 100 },
-  { id: 'thousand', label: '1K Coins', check: () => state.totalCoinsEarned >= 1000 },
-  { id: 'tenThousand', label: '10K Coins', check: () => state.totalCoinsEarned >= 10000 },
-  { id: 'million', label: '1M Coins', check: () => state.totalCoinsEarned >= 1000000 },
-  { id: 'tenMillion', label: '10M Coins', check: () => state.totalCoinsEarned >= 10000000 },
-  { id: 'hundredMillion', label: '100M Coins', check: () => state.totalCoinsEarned >= 100000000 },
-  { id: 'billion', label: '1B Coins', check: () => state.totalCoinsEarned >= 1000000000 },
-  { id: 'autoFan', label: 'Auto Fan', check: () => state.autoClick >= 5 },
-  { id: 'factoryOwner', label: 'Factory Owner', check: () => state.factory >= 1 },
-  { id: 'goldenHunter', label: 'Golden Hunter', check: () => state.goldenTouch >= 1 },
-  { id: 'luckyOne', label: 'Lucky One', check: () => state.luckyCharm >= 3 },
-  { id: 'critMaster', label: 'Crit Master', check: () => state.criticalClick >= 5 },
-  { id: 'prestigious', label: 'Prestigious', check: () => state.prestigeBoost >= 1 }
+  { id: 'firstClick', label: 'First Click', description: 'Earn your first coin by clicking the big button.', check: () => state.totalCoinsEarned > 0 },
+  { id: 'hundred', label: '100 Coins', description: 'Earn a total of 100 coins.', check: () => state.totalCoinsEarned >= 100 },
+  { id: 'thousand', label: '1K Coins', description: 'Earn a total of 1,000 coins.', check: () => state.totalCoinsEarned >= 1000 },
+  { id: 'tenThousand', label: '10K Coins', description: 'Earn a total of 10,000 coins.', check: () => state.totalCoinsEarned >= 10000 },
+  { id: 'million', label: '1M Coins', description: 'Earn a total of 1,000,000 coins.', check: () => state.totalCoinsEarned >= 1000000 },
+  { id: 'tenMillion', label: '10M Coins', description: 'Earn a total of 10,000,000 coins.', check: () => state.totalCoinsEarned >= 10000000 },
+  { id: 'hundredMillion', label: '100M Coins', description: 'Earn a total of 100,000,000 coins.', check: () => state.totalCoinsEarned >= 100000000 },
+  { id: 'billion', label: '1B Coins', description: 'Earn a total of 1,000,000,000 coins.', check: () => state.totalCoinsEarned >= 1000000000 },
+  { id: 'autoFan', label: 'Auto Fan', description: 'Own 5 Auto Clickers.', check: () => state.autoClick >= 5 },
+  { id: 'factoryOwner', label: 'Factory Owner', description: 'Buy your first Factory.', check: () => state.factory >= 1 },
+  { id: 'goldenHunter', label: 'Golden Hunter', description: 'Buy the Golden Touch upgrade.', check: () => state.goldenTouch >= 1 },
+  { id: 'luckyOne', label: 'Lucky One', description: 'Buy 3 Lucky Charms.', check: () => state.luckyCharm >= 3 },
+  { id: 'critMaster', label: 'Crit Master', description: 'Buy 5 Critical Click upgrades.', check: () => state.criticalClick >= 5 },
+  { id: 'prestigious', label: 'Prestigious', description: 'Buy your first Prestige Boost.', check: () => state.prestigeBoost >= 1 }
 ];
 
-function goldenMultiplier() {
+function GoldenMultiplier() {
   return Math.pow(2, state.goldenTouch);
 }
 
-function prestigeMultiplier() {
+function PrestigeMultiplier() {
   return 1 + state.prestigeBoost * 0.1;
 }
 
-function totalPerClick() {
-  return (state.clickPower + state.megaClick * 5) * goldenMultiplier() * prestigeMultiplier();
+function TotalPerClick() {
+  return (state.clickPower + state.megaClick * 5) * GoldenMultiplier() * PrestigeMultiplier();
 }
 
-function totalPerSecond() {
-  return (state.autoClick + state.factory * 5) * prestigeMultiplier();
+function TotalPerSecond() {
+  return (state.autoClick + state.factory * 5) * PrestigeMultiplier();
 }
 
-function checkAchievements() {
+function CheckAchievements() {
   let changed = false;
   achievements.forEach(a => {
     if (!state.achievements.includes(a.id) && a.check()) {
       state.achievements.push(a.id);
       changed = true;
-      showToast(`Achievement unlocked: ${a.label}`);
+      ShowToast(`Achievement unlocked: ${a.label}`);
     }
   });
   if (changed) {
-    saveState();
-    checkCompletion();
+    SaveState();
+    CheckCompletion();
   }
 }
 
-function allAchievementsUnlocked() {
+function AllAchievementsUnlocked() {
   return achievements.every(a => state.achievements.includes(a.id));
 }
 
-function hasCompletedBadge() {
+function HasCompletedBadge() {
   try {
     return localStorage.getItem(COMPLETED_KEY) === '1';
   } catch (e) {
@@ -119,8 +119,8 @@ function hasCompletedBadge() {
   }
 }
 
-function checkCompletion() {
-  if (hasCompletedBadge() || !allAchievementsUnlocked()) return;
+function CheckCompletion() {
+  if (HasCompletedBadge() || !AllAchievementsUnlocked()) return;
 
   try {
     localStorage.setItem(COMPLETED_KEY, '1');
@@ -129,56 +129,53 @@ function checkCompletion() {
   }
 
   completedBadgeEl.hidden = false;
-  saveState();
-  showToast('All achievements unlocked — 100% complete! Redirecting…');
+  SaveState();
+  ShowToast('All achievements unlocked - 100% complete! Redirecting…');
   setTimeout(() => { window.location.href = '../index.html'; }, 3000);
 }
 
-function renderAchievements() {
+function RenderAchievements() {
   achievementListEl.innerHTML = '';
   achievements.forEach(a => {
-    const el = document.createElement('span');
-    el.className = 'achievement' + (state.achievements.includes(a.id) ? ' unlocked' : '');
-    el.textContent = a.label;
-    achievementListEl.appendChild(el);
+    achievementListEl.appendChild(CreateAchievementButton(a, state.achievements.includes(a.id)));
   });
 }
 
-function render() {
-  counterEl.textContent = Math.floor(state.coins);
+function Render() {
+  counterEl.textContent = FormatNumber(Math.floor(state.coins));
 
   statsEl.innerHTML = `
-    Per click: ${Math.floor(totalPerClick())} &nbsp;|&nbsp; Per second: ${Math.floor(totalPerSecond())}<br>
-    Golden Touch: x${goldenMultiplier()} &nbsp;|&nbsp; Prestige: x${prestigeMultiplier().toFixed(1)}<br>
-    Crit chance: ${state.criticalClick * 5}%
+    Per click: ${FormatNumber(Math.floor(TotalPerClick()))} &nbsp;|&nbsp; Per second: ${FormatNumber(Math.floor(TotalPerSecond()))}<br>
+    Golden Touch: x${FormatNumber(GoldenMultiplier())} &nbsp;|&nbsp; Prestige: x${FormatNumber(PrestigeMultiplier(), { minimumFractionDigits: 1, maximumFractionDigits: 1 })}<br>
+    Crit chance: ${FormatNumber(state.criticalClick * 5)}%
   `;
 
   buyButtons.forEach(btn => {
     const type = btn.dataset.type;
     const cost = costs[type]();
-    btn.textContent = `Buy (${cost})`;
+    btn.textContent = `Buy (${FormatNumber(cost)})`;
     btn.disabled = state.coins < cost;
   });
 
-  renderAchievements();
+  RenderAchievements();
 }
 
-function addCoins(amount) {
+function AddCoins(amount) {
   state.coins += amount;
   state.totalCoinsEarned += amount;
-  checkAchievements();
-  saveState();
-  render();
+  CheckAchievements();
+  SaveState();
+  Render();
 }
 
-function showToast(message) {
+function ShowToast(message) {
   toastEl.textContent = message;
   toastEl.classList.add('show');
-  clearTimeout(showToast._timer);
-  showToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
+  clearTimeout(ShowToast._timer);
+  ShowToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
 }
 
-function wipeProgress() {
+function WipeProgress() {
   Object.assign(state, { ...defaultState, achievements: [] });
   try {
     localStorage.removeItem(STORAGE_KEY);
@@ -187,11 +184,11 @@ function wipeProgress() {
     console.warn('Could not clear saved progress:', e);
   }
   if (completedBadgeEl) completedBadgeEl.hidden = true;
-  render();
+  Render();
 }
 
 clickBtn.addEventListener('click', () => {
-  let amount = totalPerClick();
+  let amount = TotalPerClick();
   const critChance = state.criticalClick * 0.05;
   const isCrit = Math.random() < critChance;
 
@@ -199,10 +196,10 @@ clickBtn.addEventListener('click', () => {
     amount *= 10;
     counterEl.classList.add('crit');
     setTimeout(() => counterEl.classList.remove('crit'), 300);
-    showToast(`Critical! x10 (+${Math.floor(amount)})`);
+    ShowToast(`Critical! x10 (+${FormatNumber(Math.floor(amount))})`);
   }
 
-  addCoins(amount);
+  AddCoins(amount);
   counterEl.classList.add('bump');
   setTimeout(() => counterEl.classList.remove('bump'), 100);
 });
@@ -214,30 +211,30 @@ buyButtons.forEach(btn => {
     if (state.coins < cost) return;
     state.coins -= cost;
     state[type] += 1;
-    checkAchievements();
-    saveState();
-    render();
+    CheckAchievements();
+    SaveState();
+    Render();
   });
 });
 
 resetBtn.addEventListener('click', () => {
   if (!confirm('Reset all progress?')) return;
-  wipeProgress();
-  saveState();
+  WipeProgress();
+  SaveState();
 });
 
 setInterval(() => {
-  const income = totalPerSecond();
+  const income = TotalPerSecond();
   if (income > 0) {
     state.coins += income;
     state.totalCoinsEarned += income;
-    checkAchievements();
-    saveState();
-    render();
+    CheckAchievements();
+    SaveState();
+    Render();
   }
 }, 1000);
 
-function scheduleGoldenCoin() {
+function ScheduleGoldenCoin() {
   const baseMin = 30000;
   const baseMax = 60000;
   const reduction = Math.min(state.luckyCharm * 5000, 20000);
@@ -246,11 +243,11 @@ function scheduleGoldenCoin() {
   const delay = min + Math.random() * (max - min);
 
   setTimeout(() => {
-    spawnGoldenCoin();
+    SpawnGoldenCoin();
   }, delay);
 }
 
-function spawnGoldenCoin() {
+function SpawnGoldenCoin() {
   const x = 10 + Math.random() * 80;
   const y = 10 + Math.random() * 80;
   goldenCoinEl.style.left = `${x}vw`;
@@ -260,24 +257,24 @@ function spawnGoldenCoin() {
   const lifetime = 8000;
   const hideTimer = setTimeout(() => {
     goldenCoinEl.classList.remove('visible');
-    scheduleGoldenCoin();
+    ScheduleGoldenCoin();
   }, lifetime);
 
   goldenCoinEl.onclick = () => {
     clearTimeout(hideTimer);
     goldenCoinEl.classList.remove('visible');
 
-    const reward = Math.max(10, Math.floor(totalPerClick() * 20));
-    addCoins(reward);
-    showToast(`Golden coin! +${reward} coins`);
+    const reward = Math.max(10, Math.floor(TotalPerClick() * 20));
+    AddCoins(reward);
+    ShowToast(`Golden coin! +${FormatNumber(reward)} coins`);
 
-    scheduleGoldenCoin();
+    ScheduleGoldenCoin();
   };
 }
 
-scheduleGoldenCoin();
+ScheduleGoldenCoin();
 
-render();
+Render();
 
-if (hasCompletedBadge()) completedBadgeEl.hidden = false;
-checkCompletion();
+if (HasCompletedBadge()) completedBadgeEl.hidden = false;
+CheckCompletion();

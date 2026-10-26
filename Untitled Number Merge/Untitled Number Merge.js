@@ -33,7 +33,7 @@ const defaultStats = {
   bestTile: 0
 };
 
-function loadStats() {
+function LoadStats() {
   try {
     const saved = JSON.parse(localStorage.getItem(STATS_KEY));
     if (saved) {
@@ -59,7 +59,7 @@ function loadStats() {
   return { ...defaultStats, bestScores: {}, variantsWon: [] };
 }
 
-function saveStats() {
+function SaveStats() {
   try {
     localStorage.setItem(STATS_KEY, JSON.stringify(stats));
   } catch (e) {
@@ -67,27 +67,27 @@ function saveStats() {
   }
 }
 
-const stats = loadStats();
+const stats = LoadStats();
 
 const achievements = [
-  { id: 'firstMerge', label: 'First Merge', check: v => v.merges >= 1 },
-  { id: 'tile128', label: 'Reach 128', check: v => v.maxTile >= 128 },
-  { id: 'tile512', label: 'Reach 512', check: v => v.maxTile >= 512 },
-  { id: 'tile2048', label: 'Reach 2048', check: v => v.maxTile >= 2048 },
-  { id: 'tile4096', label: 'Reach 4096', check: v => v.maxTile >= 4096 },
-  { id: 'score1000', label: 'Score 1,000', check: v => v.score >= 1000 },
-  { id: 'score5000', label: 'Score 5,000', check: v => v.score >= 5000 },
-  { id: 'score10000', label: 'Score 10,000', check: v => v.score >= 10000 },
-  { id: 'score25000', label: 'Score 25,000', check: v => v.score >= 25000 },
-  { id: 'merges50', label: '50 Merges', check: v => v.merges >= 50 },
-  { id: 'merges200', label: '200 Merges', check: v => v.merges >= 200 },
-  { id: 'win5x5', label: '5 × 5 Win', check: v => v.variantsWon.includes('5x5') },
-  { id: 'win6x6', label: '6 × 6 Win', check: v => v.variantsWon.includes('6x6') },
-  { id: 'big4096', label: '6 × 6 · 4096', check: v => v.size === 6 && v.maxTile >= 4096 },
-  { id: 'explorer', label: 'Explorer', check: v => v.variantsWon.length >= 3 },
-  { id: 'games10', label: '10 Games', check: v => v.games >= 10 },
-  { id: 'career500', label: '500 Career Merges', check: v => v.totalMerges >= 500 },
-  { id: 'legend', label: 'Legend', check: v => v.bestTile >= 8192 }
+  { id: 'firstMerge', label: 'First Merge', description: 'Merge two tiles for the first time.', check: v => v.merges >= 1 },
+  { id: 'tile128', label: 'Reach 128', description: 'Create a 128 tile.', check: v => v.maxTile >= 128 },
+  { id: 'tile512', label: 'Reach 512', description: 'Create a 512 tile.', check: v => v.maxTile >= 512 },
+  { id: 'tile2048', label: 'Reach 2048', description: 'Create a 2048 tile.', check: v => v.maxTile >= 2048 },
+  { id: 'tile4096', label: 'Reach 4096', description: 'Create a 4096 tile.', check: v => v.maxTile >= 4096 },
+  { id: 'score1000', label: 'Score 1,000', description: 'Reach a score of 1,000 in a single game.', check: v => v.score >= 1000 },
+  { id: 'score5000', label: 'Score 5,000', description: 'Reach a score of 5,000 in a single game.', check: v => v.score >= 5000 },
+  { id: 'score10000', label: 'Score 10,000', description: 'Reach a score of 10,000 in a single game.', check: v => v.score >= 10000 },
+  { id: 'score25000', label: 'Score 25,000', description: 'Reach a score of 25,000 in a single game.', check: v => v.score >= 25000 },
+  { id: 'merges50', label: '50 Merges', description: 'Make 50 merges in a single game.', check: v => v.merges >= 50 },
+  { id: 'merges200', label: '200 Merges', description: 'Make 200 merges in a single game.', check: v => v.merges >= 200 },
+  { id: 'win5x5', label: '5 × 5 Win', description: 'Reach 2048 on the 5 × 5 board.', check: v => v.variantsWon.includes('5x5') },
+  { id: 'win6x6', label: '6 × 6 Win', description: 'Reach 2048 on the 6 × 6 board.', check: v => v.variantsWon.includes('6x6') },
+  { id: 'big4096', label: '6 × 6 · 4096', description: 'Create a 4096 tile on the 6 × 6 board.', check: v => v.size === 6 && v.maxTile >= 4096 },
+  { id: 'explorer', label: 'Explorer', description: 'Win on all three board sizes.', check: v => v.variantsWon.length >= 3 },
+  { id: 'games10', label: '10 Games', description: 'Play 10 games.', check: v => v.games >= 10 },
+  { id: 'career500', label: '500 Career Merges', description: 'Make 500 merges across all games.', check: v => v.totalMerges >= 500 },
+  { id: 'legend', label: 'Legend', description: 'Create an 8192 tile at any point in your career.', check: v => v.bestTile >= 8192 }
 ];
 
 let variantKey = '4x4';
@@ -100,19 +100,19 @@ let merges = 0;
 let won = false;
 let counted = false;
 
-function emptyGrid() {
+function EmptyGrid() {
   return Array.from({ length: variant.size }, () => Array(variant.size).fill(0));
 }
 
-function transpose(matrix) {
+function Transpose(matrix) {
   return matrix[0].map((_, col) => matrix.map(row => row[col]));
 }
 
-function maxTile() {
+function MaxTile() {
   return Math.max(...grid.flat());
 }
 
-function addRandomTile() {
+function AddRandomTile() {
   const empty = [];
   grid.forEach((row, r) => row.forEach((value, c) => {
     if (!value) empty.push([r, c]);
@@ -123,7 +123,7 @@ function addRandomTile() {
   grid[row][col] = Math.random() < 0.9 ? 2 : 4;
 }
 
-function slideLine(line) {
+function SlideLine(line) {
   const values = line.filter(Boolean);
   const result = [];
   let gained = 0;
@@ -145,30 +145,30 @@ function slideLine(line) {
   return { line: result, gained, merged };
 }
 
-function move(direction) {
+function Move(direction) {
   if (!overlayEl.hidden) return;
 
   const before = grid.flat();
   let gained = 0;
   let merged = 0;
 
-  const slideRows = rows => rows.map(row => {
-    const slid = slideLine(row);
+  const SlideRows = rows => rows.map(row => {
+    const slid = SlideLine(row);
     gained += slid.gained;
     merged += slid.merged;
     return slid.line;
   });
 
-  const reverse = rows => rows.map(row => [...row].reverse());
+  const Reverse = rows => rows.map(row => [...row].reverse());
 
   if (direction === 'left') {
-    grid = slideRows(grid);
+    grid = SlideRows(grid);
   } else if (direction === 'right') {
-    grid = reverse(slideRows(reverse(grid)));
+    grid = Reverse(SlideRows(Reverse(grid)));
   } else if (direction === 'up') {
-    grid = transpose(slideRows(transpose(grid)));
+    grid = Transpose(SlideRows(Transpose(grid)));
   } else if (direction === 'down') {
-    grid = transpose(reverse(slideRows(reverse(transpose(grid)))));
+    grid = Transpose(Reverse(SlideRows(Reverse(Transpose(grid)))));
   }
 
   const moved = grid.flat().some((value, i) => value !== before[i]);
@@ -188,29 +188,29 @@ function move(direction) {
     stats.bestScores[variantKey] = score;
   }
 
-  addRandomTile();
-  stats.bestTile = Math.max(stats.bestTile, maxTile());
-  saveStats();
+  AddRandomTile();
+  stats.bestTile = Math.max(stats.bestTile, MaxTile());
+  SaveStats();
 
-  render(before);
-  checkAchievements();
+  Render(before);
+  CheckAchievements();
 
-  if (!won && maxTile() >= TARGET) {
+  if (!won && MaxTile() >= TARGET) {
     won = true;
     stats.wins += 1;
     if (!stats.variantsWon.includes(variantKey)) stats.variantsWon.push(variantKey);
-    saveStats();
-    checkAchievements();
-    showOverlay(`${variant.label} · 2048!`, `Score ${score} — keep going for a higher tile.`,
-      'Keep playing', hideOverlay);
-  } else if (!canMove()) {
-    showOverlay('No moves left',
-      `Score ${score} · best ${stats.bestScores[variantKey] || 0}`,
-      'Try again', () => startGame(variantKey), false);
+    SaveStats();
+    CheckAchievements();
+    ShowOverlay(`${variant.label} · 2048!`, `Score ${FormatNumber(score)} - keep going for a higher tile.`,
+      'Keep playing', HideOverlay);
+  } else if (!CanMove()) {
+    ShowOverlay('No moves left',
+      `Score ${FormatNumber(score)} · best ${FormatNumber(stats.bestScores[variantKey] || 0)}`,
+      'Try again', () => StartGame(variantKey), false);
   }
 }
 
-function canMove() {
+function CanMove() {
   if (grid.flat().includes(0)) return true;
 
   for (let r = 0; r < variant.size; r++) {
@@ -223,7 +223,7 @@ function canMove() {
   return false;
 }
 
-function buildCells() {
+function BuildCells() {
   boardEl.innerHTML = '';
   boardEl.style.setProperty('--size', String(variant.size));
   boardEl.classList.toggle('board--dense', variant.size >= 5);
@@ -244,7 +244,7 @@ function buildCells() {
   }
 }
 
-function render(previous = []) {
+function Render(previous = []) {
   grid.flat().forEach((value, i) => {
     const tile = cellEls[i].firstElementChild;
     const isNew = value !== previous[i];
@@ -257,19 +257,19 @@ function render(previous = []) {
     }
 
     tile.className = className;
-    tile.textContent = value || '';
+    tile.textContent = value ? FormatNumber(value) : '';
   });
 
-  scoreEl.textContent = score;
-  bestEl.textContent = stats.bestScores[variantKey] || 0;
-  movesEl.textContent = moves;
+  scoreEl.textContent = FormatNumber(score);
+  bestEl.textContent = FormatNumber(stats.bestScores[variantKey] || 0);
+  movesEl.textContent = FormatNumber(moves);
 }
 
-function checkAchievements() {
+function CheckAchievements() {
   const view = {
     score,
     merges,
-    maxTile: maxTile(),
+    maxTile: MaxTile(),
     size: variant.size,
     wins: stats.wins,
     games: stats.games,
@@ -283,22 +283,22 @@ function checkAchievements() {
     if (!stats.unlocked.includes(a.id) && a.check(view)) {
       stats.unlocked.push(a.id);
       changed = true;
-      showToast(`Achievement unlocked: ${a.label}`);
+      ShowToast(`Achievement unlocked: ${a.label}`);
     }
   });
 
   if (changed) {
-    saveStats();
-    renderAchievements();
-    checkCompletion();
+    SaveStats();
+    RenderAchievements();
+    CheckCompletion();
   }
 }
 
-function allAchievementsUnlocked() {
+function AllAchievementsUnlocked() {
   return achievements.every(a => stats.unlocked.includes(a.id));
 }
 
-function hasCompletedBadge() {
+function HasCompletedBadge() {
   try {
     return localStorage.getItem(COMPLETED_KEY) === '1';
   } catch (e) {
@@ -306,8 +306,8 @@ function hasCompletedBadge() {
   }
 }
 
-function checkCompletion() {
-  if (hasCompletedBadge() || !allAchievementsUnlocked()) return;
+function CheckCompletion() {
+  if (HasCompletedBadge() || !AllAchievementsUnlocked()) return;
 
   try {
     localStorage.setItem(COMPLETED_KEY, '1');
@@ -316,29 +316,26 @@ function checkCompletion() {
   }
 
   completedBadgeEl.hidden = false;
-  saveStats();
-  showToast('All achievements unlocked — 100% complete! Redirecting…');
+  SaveStats();
+  ShowToast('All achievements unlocked - 100% complete! Redirecting…');
   setTimeout(() => { window.location.href = '../index.html'; }, 3000);
 }
 
-function renderAchievements() {
+function RenderAchievements() {
   achievementListEl.innerHTML = '';
   achievements.forEach(a => {
-    const el = document.createElement('span');
-    el.className = 'achievement' + (stats.unlocked.includes(a.id) ? ' unlocked' : '');
-    el.textContent = a.label;
-    achievementListEl.appendChild(el);
+    achievementListEl.appendChild(CreateAchievementButton(a, stats.unlocked.includes(a.id)));
   });
 }
 
-function showToast(message) {
+function ShowToast(message) {
   toastEl.textContent = message;
   toastEl.classList.add('show');
-  clearTimeout(showToast._timer);
-  showToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
+  clearTimeout(ShowToast._timer);
+  ShowToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
 }
 
-function showOverlay(title, summary, primaryLabel, primaryAction, withSecondary = true) {
+function ShowOverlay(title, summary, primaryLabel, primaryAction, withSecondary = true) {
   overlayTitleEl.textContent = title;
   overlaySummaryEl.textContent = summary;
   primaryBtn.textContent = primaryLabel;
@@ -349,16 +346,16 @@ function showOverlay(title, summary, primaryLabel, primaryAction, withSecondary 
   primaryBtn.focus();
 }
 
-function hideOverlay() {
+function HideOverlay() {
   overlayEl.hidden = true;
 }
 
-function startGame(nextVariant = variantKey) {
+function StartGame(nextVariant = variantKey) {
   if (!VARIANTS[nextVariant]) nextVariant = '4x4';
   variantKey = nextVariant;
   variant = VARIANTS[variantKey];
 
-  grid = emptyGrid();
+  grid = EmptyGrid();
   score = 0;
   moves = 0;
   merges = 0;
@@ -371,13 +368,13 @@ function startGame(nextVariant = variantKey) {
 
   scoreEl.textContent = '0';
   movesEl.textContent = '0';
-  bestEl.textContent = stats.bestScores[variantKey] || 0;
+  bestEl.textContent = FormatNumber(stats.bestScores[variantKey] || 0);
 
-  hideOverlay();
-  buildCells();
-  addRandomTile();
-  addRandomTile();
-  render();
+  HideOverlay();
+  BuildCells();
+  AddRandomTile();
+  AddRandomTile();
+  Render();
 }
 
 const directions = {
@@ -399,7 +396,7 @@ window.addEventListener('keydown', event => {
   const direction = directions[event.key];
   if (!direction) return;
   event.preventDefault();
-  move(direction);
+  Move(direction);
 });
 
 let touchStart = null;
@@ -420,20 +417,20 @@ boardEl.addEventListener('touchend', event => {
   if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
 
   if (Math.abs(dx) > Math.abs(dy)) {
-    move(dx > 0 ? 'right' : 'left');
+    Move(dx > 0 ? 'right' : 'left');
   } else {
-    move(dy > 0 ? 'down' : 'up');
+    Move(dy > 0 ? 'down' : 'up');
   }
 }, { passive: true });
 
 chips.forEach(chip => {
-  chip.addEventListener('click', () => startGame(chip.dataset.variant));
+  chip.addEventListener('click', () => StartGame(chip.dataset.variant));
 });
 
-secondaryBtn.addEventListener('click', () => startGame());
-restartBtn.addEventListener('click', () => startGame());
+secondaryBtn.addEventListener('click', () => StartGame());
+restartBtn.addEventListener('click', () => StartGame());
 
-if (hasCompletedBadge()) completedBadgeEl.hidden = false;
+if (HasCompletedBadge()) completedBadgeEl.hidden = false;
 
-renderAchievements();
-startGame();
+RenderAchievements();
+StartGame();

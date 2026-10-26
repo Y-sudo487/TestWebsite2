@@ -1,31 +1,15 @@
 :root {
-  color-scheme: dark;
-  --bg: #180a04;
-  --bg-soft: #241009;
-  --card: #2a0f05;
-  --border: rgba(255, 138, 60, 0.18);
-  --border-strong: rgba(255, 138, 60, 0.4);
-  --text: #ffe8cc;
-  --muted: #d9a47a;
-  --orange: #ff7a1a;
-  --yellow: #ffc300;
-  --yellow-light: #ffe066;
-  --radius: 1rem;
-}
-
-[data-theme="light"] {
   color-scheme: light;
-  --bg: #fff7ee;
-  --bg-soft: #ffecd9;
-  --card: #fffdf9;
-  --border: rgba(150, 68, 18, 0.2);
-  --border-strong: rgba(150, 68, 18, 0.45);
-  --text: #2f1608;
-  --muted: #7a4a2c;
+  --bg: #ffffff;
+  --bg-soft: #f4f4f4;
+  --card: #ffffff;
+  --border: rgba(0, 0, 0, 0.14);
+  --border-strong: rgba(0, 0, 0, 0.32);
+  --text: #111111;
+  --muted: #5b5b5b;
   --orange: #c24a06;
   --yellow: #9a5c00;
   --yellow-light: #7d4a00;
-  --radius: 1rem;
 }
 
 * {
@@ -41,7 +25,7 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
   color: var(--text);
-  background: var(--bg);
+  background: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -59,7 +43,7 @@ main {
 :focus-visible {
   outline: 2px solid var(--yellow);
   outline-offset: 3px;
-  border-radius: 4px;
+  border-radius: 0;
 }
 
 /* ---------- Navbar ---------- */
@@ -68,9 +52,8 @@ main {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(24, 10, 4, 0.92);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(10px);
+  background: #000000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .nav-inner {
@@ -82,41 +65,15 @@ main {
 }
 
 .navbar-brand {
-  color: var(--text);
+  color: #ffffff;
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.3px;
   text-decoration: none;
 }
 
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.85rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  background: var(--bg-soft);
-  color: var(--text);
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
-}
-
-.theme-toggle:hover {
-  border-color: var(--yellow);
-  color: var(--yellow);
-}
-
-.theme-toggle-icon {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-[data-theme="light"] .navbar {
-  background: rgba(255, 247, 238, 0.92);
+.navbar :focus-visible {
+  outline-color: #ffffff;
 }
 
 /* ---------- Hero ---------- */
@@ -131,7 +88,7 @@ main {
   margin-bottom: 1.25rem;
   padding: 0.3rem 0.85rem;
   border: 1px solid var(--border-strong);
-  border-radius: 999px;
+  border-radius: 0;
   color: var(--yellow);
   font-size: 0.75rem;
   font-weight: 700;
@@ -169,7 +126,7 @@ main {
   padding: 1.5rem;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 0;
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
@@ -190,7 +147,7 @@ main {
   margin-left: 0.4rem;
   padding: 0.1rem 0.5rem;
   border: 1px solid var(--yellow);
-  border-radius: 999px;
+  border-radius: 0;
   background: rgba(255, 195, 0, 0.12);
   color: var(--yellow);
   font-size: 0.68rem;
@@ -214,7 +171,7 @@ main {
 }
 
 .card-link:hover {
-  color: var(--yellow-light);
+  color: var(--orange);
   text-decoration: underline;
 }
 
@@ -257,10 +214,6 @@ main {
 
   .navbar-brand {
     font-size: 1rem;
-  }
-
-  .theme-toggle {
-    padding-inline: 0.7rem;
   }
 }
 

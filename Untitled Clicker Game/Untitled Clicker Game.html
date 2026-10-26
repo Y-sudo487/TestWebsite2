@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Untitled Clicker Game</title>
   <link rel="stylesheet" href="./Untitled%20Clicker%20Game.css">
-  <script src="../theme.js"></script>
+  <link rel="stylesheet" href="../shared.css">
 </head>
 <body>
 
-  <h1>Untitled Clicker Game</h1>
+  <header class="topbar">
+    <a class="back" href="../index.html">← All games</a>
+    <h1>Untitled Clicker Game</h1>
+    <button class="reset-btn" id="resetBtn" type="button">Reset Game</button>
+  </header>
 
   <div class="completed-badge" id="completedBadge" hidden>
     🏆 100% Completed — every achievement unlocked
@@ -94,8 +98,6 @@
         </div>
         <button class="buy-btn" data-type="prestigeBoost">Buy</button>
       </div>
-
-      <button class="reset-btn" id="resetBtn">Reset Game</button>
     </div>
   </div>
 
@@ -103,6 +105,7 @@
 
   <div class="toast" id="toast"></div>
 
+  <script src="../shared.js"></script>
   <script src="./Untitled%20Clicker%20Game.js"></script>
 </body>
 </html>

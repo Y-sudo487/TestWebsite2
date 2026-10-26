@@ -36,7 +36,7 @@ const defaultStats = {
   variantsWon: []
 };
 
-function loadStats() {
+function LoadStats() {
   try {
     const saved = JSON.parse(localStorage.getItem(STATS_KEY));
     if (saved) {
@@ -63,7 +63,7 @@ function loadStats() {
   return { ...defaultStats, best: {}, variantsWon: [] };
 }
 
-function saveStats() {
+function SaveStats() {
   try {
     localStorage.setItem(STATS_KEY, JSON.stringify(stats));
   } catch (e) {
@@ -71,25 +71,24 @@ function saveStats() {
   }
 }
 
-const stats = loadStats();
+const stats = LoadStats();
 
 const achievements = [
-  { id: 'firstMatch', label: 'First Match', check: v => v.pairs >= 1 },
-  { id: 'halfway', label: 'Halfway There', check: v => v.pairs >= 4 },
-  { id: 'champion', label: 'Champion', check: v => v.wins >= 1 },
-  { id: 'perfect', label: 'Perfect Memory', check: v => v.won && v.variant === '4x4' && v.moves <= 12 },
-  { id: 'speedy', label: 'Speed Run', check: v => v.won && v.seconds <= 45 },
-  { id: 'flawless', label: 'Flawless', check: v => v.won && v.moves === v.pairs },
-  { id: 'blitz', label: 'Blitz', check: v => v.won && v.variant === '4x4' && v.seconds <= 30 },
-  { id: 'bigDeck', label: 'Big Deck', check: v => v.won && v.variant === '5x4' },
-  { id: 'giant', label: 'Giant', check: v => v.won && v.variant === '6x6' },
-  { id: 'marathon', label: 'Marathon', check: v => v.won && v.variant === '6x6' && v.seconds <= 180 },
-  { id: 'sharp', label: 'Sharp Eye', check: v => v.won && v.variant === '5x4' && v.moves <= 16 },
-  { id: 'regular', label: 'Regular', check: v => v.wins >= 5 },
-  { id: 'addict', label: 'Addict', check: v => v.wins >= 10 },
-  { id: 'century', label: 'Century', check: v => v.totalMoves >= 100 },
-  { id: 'streak3', label: 'Hot Streak', check: v => v.bestWinStreak >= 3 },
-  { id: 'explorer', label: 'Explorer', check: v => v.variantsWon.length >= 3 }
+  { id: 'firstMatch', label: 'First Match', description: 'Find your first matching pair.', check: v => v.pairs >= 1 },
+  { id: 'halfway', label: 'Halfway There', description: 'Match 4 pairs in a single game.', check: v => v.pairs >= 4 },
+  { id: 'champion', label: 'Champion', description: 'Win your first game of Memory Match.', check: v => v.wins >= 1 },
+  { id: 'perfect', label: 'Perfect Memory', description: 'Win a 4 × 4 game in 12 moves or fewer.', check: v => v.won && v.variant === '4x4' && v.moves <= 12 },
+  { id: 'speedy', label: 'Speed Run', description: 'Win any game in 45 seconds or less.', check: v => v.won && v.seconds <= 45 },
+  { id: 'flawless', label: 'Flawless', description: 'Win a game without any mismatched pairs.', check: v => v.won && v.moves === v.pairs },
+  { id: 'blitz', label: 'Blitz', description: 'Win a 4 × 4 game in 30 seconds or less.', check: v => v.won && v.variant === '4x4' && v.seconds <= 30 },
+  { id: 'bigDeck', label: 'Big Deck', description: 'Win a 5 × 4 game.', check: v => v.won && v.variant === '5x4' },
+  { id: 'giant', label: 'Giant', description: 'Win a 6 × 6 game.', check: v => v.won && v.variant === '6x6' },
+  { id: 'marathon', label: 'Marathon', description: 'Win a 6 × 6 game in 3 minutes or less.', check: v => v.won && v.variant === '6x6' && v.seconds <= 180 },
+  { id: 'sharp', label: 'Sharp Eye', description: 'Win a 5 × 4 game in 16 moves or fewer.', check: v => v.won && v.variant === '5x4' && v.moves <= 16 },
+  { id: 'regular', label: 'Regular', description: 'Win 5 games.', check: v => v.wins >= 5 },
+  { id: 'addict', label: 'Addict', description: 'Win 10 games.', check: v => v.wins >= 10 },
+  { id: 'century', label: 'Century', description: 'Make 100 total moves across all games.', check: v => v.totalMoves >= 100 },
+  { id: 'explorer', label: 'Explorer', description: 'Win a game in every board size.', check: v => v.variantsWon.length >= 3 }
 ];
 
 let variantKey = '4x4';
@@ -104,17 +103,17 @@ let startTime = null;
 let elapsed = 0;
 let timerId = null;
 
-function formatTime(totalSeconds) {
+function FormatTime(totalSeconds) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-function currentSeconds() {
+function CurrentSeconds() {
   return startTime === null ? 0 : Math.floor((performance.now() - startTime) / 1000);
 }
 
-function shuffle(items) {
+function Shuffle(items) {
   for (let i = items.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [items[i], items[j]] = [items[j], items[i]];
@@ -122,9 +121,9 @@ function shuffle(items) {
   return items;
 }
 
-function buildBoard() {
+function BuildBoard() {
   const symbols = SYMBOLS.slice(0, variant.pairs);
-  const deck = shuffle([...symbols, ...symbols]);
+  const deck = Shuffle([...symbols, ...symbols]);
 
   boardEl.innerHTML = '';
   boardEl.classList.toggle('board--dense', variant.cols >= 6);
@@ -142,28 +141,28 @@ function buildBoard() {
         <span class="face face-back" aria-hidden="true">?</span>
         <span class="face face-front" aria-hidden="true">${symbol}</span>
       </span>`;
-    card.addEventListener('click', () => flipCard(card));
+    card.addEventListener('click', () => FlipCard(card));
     boardEl.appendChild(card);
   });
 }
 
-function startTimer() {
+function StartTimer() {
   startTime = performance.now();
   timerId = setInterval(() => {
-    elapsed = currentSeconds();
-    timerEl.textContent = formatTime(elapsed);
+    elapsed = CurrentSeconds();
+    timerEl.textContent = FormatTime(elapsed);
   }, 500);
 }
 
-function stopTimer() {
+function StopTimer() {
   clearInterval(timerId);
   timerId = null;
 }
 
-function flipCard(card) {
+function FlipCard(card) {
   if (locked || won || card.classList.contains('flipped')) return;
 
-  if (startTime === null) startTimer();
+  if (startTime === null) StartTimer();
 
   card.classList.add('flipped');
   card.setAttribute('aria-label', `Card showing ${card.dataset.symbol}`);
@@ -175,7 +174,7 @@ function flipCard(card) {
 
   secondCard = card;
   moves += 1;
-  movesEl.textContent = moves;
+  movesEl.textContent = FormatNumber(moves);
 
   if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
     const pair = [firstCard, secondCard];
@@ -188,10 +187,10 @@ function flipCard(card) {
     });
 
     matchedPairs += 1;
-    pairsEl.textContent = `${matchedPairs} / ${variant.pairs}`;
-    checkAchievements();
+    pairsEl.textContent = `${FormatNumber(matchedPairs)} / ${FormatNumber(variant.pairs)}`;
+    CheckAchievements();
 
-    if (matchedPairs === variant.pairs) finishGame();
+    if (matchedPairs === variant.pairs) FinishGame();
   } else {
     const pair = [firstCard, secondCard];
     firstCard = null;
@@ -208,11 +207,11 @@ function flipCard(card) {
   }
 }
 
-function finishGame() {
+function FinishGame() {
   won = true;
-  stopTimer();
-  elapsed = currentSeconds();
-  timerEl.textContent = formatTime(elapsed);
+  StopTimer();
+  elapsed = CurrentSeconds();
+  timerEl.textContent = FormatTime(elapsed);
 
   stats.wins += 1;
   stats.totalMoves += moves;
@@ -227,20 +226,20 @@ function finishGame() {
     stats.best[variantKey] = { moves, seconds: elapsed };
   }
 
-  saveStats();
-  renderBest();
-  checkAchievements();
+  SaveStats();
+  RenderBest();
+  CheckAchievements();
 
-  winSummaryEl.textContent = `${variant.label} · ${moves} moves in ${formatTime(elapsed)}`;
+  winSummaryEl.textContent = `${variant.label} · ${FormatNumber(moves)} moves in ${FormatTime(elapsed)}`;
   winEl.hidden = false;
   playAgainBtn.focus();
 }
 
-function checkAchievements() {
+function CheckAchievements() {
   const view = {
     pairs: matchedPairs,
     moves,
-    seconds: won ? elapsed : currentSeconds(),
+    seconds: won ? elapsed : CurrentSeconds(),
     won,
     variant: variantKey,
     wins: stats.wins,
@@ -254,22 +253,22 @@ function checkAchievements() {
     if (!stats.unlocked.includes(a.id) && a.check(view)) {
       stats.unlocked.push(a.id);
       changed = true;
-      showToast(`Achievement unlocked: ${a.label}`);
+      ShowToast(`Achievement unlocked: ${a.label}`);
     }
   });
 
   if (changed) {
-    saveStats();
-    renderAchievements();
-    checkCompletion();
+    SaveStats();
+    RenderAchievements();
+    CheckCompletion();
   }
 }
 
-function allAchievementsUnlocked() {
+function AllAchievementsUnlocked() {
   return achievements.every(a => stats.unlocked.includes(a.id));
 }
 
-function hasCompletedBadge() {
+function HasCompletedBadge() {
   try {
     return localStorage.getItem(COMPLETED_KEY) === '1';
   } catch (e) {
@@ -277,8 +276,8 @@ function hasCompletedBadge() {
   }
 }
 
-function checkCompletion() {
-  if (hasCompletedBadge() || !allAchievementsUnlocked()) return;
+function CheckCompletion() {
+  if (HasCompletedBadge() || !AllAchievementsUnlocked()) return;
 
   try {
     localStorage.setItem(COMPLETED_KEY, '1');
@@ -287,46 +286,43 @@ function checkCompletion() {
   }
 
   completedBadgeEl.hidden = false;
-  saveStats();
-  showToast('All achievements unlocked — 100% complete! Redirecting…');
+  SaveStats();
+  ShowToast('All achievements unlocked - 100% complete! Redirecting…');
   setTimeout(() => { window.location.href = '../index.html'; }, 3000);
 }
 
-function renderAchievements() {
+function RenderAchievements() {
   achievementListEl.innerHTML = '';
   achievements.forEach(a => {
-    const el = document.createElement('span');
-    el.className = 'achievement' + (stats.unlocked.includes(a.id) ? ' unlocked' : '');
-    el.textContent = a.label;
-    achievementListEl.appendChild(el);
+    achievementListEl.appendChild(CreateAchievementButton(a, stats.unlocked.includes(a.id)));
   });
 }
 
-function renderBest() {
+function RenderBest() {
   const best = stats.best[variantKey];
-  bestEl.textContent = best ? `${best.moves} moves` : '—';
+  bestEl.textContent = best ? `${FormatNumber(best.moves)} moves` : '-';
 }
 
-function showToast(message) {
+function ShowToast(message) {
   toastEl.textContent = message;
   toastEl.classList.add('show');
-  clearTimeout(showToast._timer);
-  showToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
+  clearTimeout(ShowToast._timer);
+  ShowToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
 }
 
-function startGame(nextVariant = variantKey) {
+function StartGame(nextVariant = variantKey) {
   if (!VARIANTS[nextVariant]) nextVariant = '4x4';
 
-  // Walking away from a game that was already underway breaks the win streak.
+
   if (!won && moves > 0) {
     stats.winStreak = 0;
-    saveStats();
+    SaveStats();
   }
 
   variantKey = nextVariant;
   variant = VARIANTS[variantKey];
 
-  stopTimer();
+  StopTimer();
   firstCard = null;
   secondCard = null;
   locked = false;
@@ -341,22 +337,22 @@ function startGame(nextVariant = variantKey) {
   });
 
   movesEl.textContent = '0';
-  pairsEl.textContent = `0 / ${variant.pairs}`;
+  pairsEl.textContent = `0 / ${FormatNumber(variant.pairs)}`;
   timerEl.textContent = '0:00';
   winEl.hidden = true;
 
-  renderBest();
-  buildBoard();
+  RenderBest();
+  BuildBoard();
 }
 
 chips.forEach(chip => {
-  chip.addEventListener('click', () => startGame(chip.dataset.variant));
+  chip.addEventListener('click', () => StartGame(chip.dataset.variant));
 });
 
-restartBtn.addEventListener('click', () => startGame());
-playAgainBtn.addEventListener('click', () => startGame());
+restartBtn.addEventListener('click', () => StartGame());
+playAgainBtn.addEventListener('click', () => StartGame());
 
-if (hasCompletedBadge()) completedBadgeEl.hidden = false;
+if (HasCompletedBadge()) completedBadgeEl.hidden = false;
 
-renderAchievements();
-startGame();
+RenderAchievements();
+StartGame();

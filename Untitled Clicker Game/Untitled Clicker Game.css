@@ -1,18 +1,18 @@
 :root {
-  color-scheme: dark;
-  --bg: #2a0f05;
-  --surface: rgba(255, 138, 60, 0.08);
-  --border: rgba(255, 138, 60, 0.22);
-  --border-soft: rgba(255, 138, 60, 0.14);
-  --text: #ffe8cc;
-  --muted: #ffb877;
-  --dim: #b57a55;
-  --orange: #ff7a1a;
-  --orange-light: #ffa04d;
-  --red: #e8412c;
-  --yellow: #ffc300;
-  --yellow-light: #ffe066;
-  --ink: #2a0f05;
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: rgba(150, 68, 18, 0.07);
+  --border: rgba(150, 68, 18, 0.22);
+  --border-soft: rgba(150, 68, 18, 0.14);
+  --text: #2f1608;
+  --muted: #7a4a2c;
+  --dim: #7a4a2c;
+  --orange: #c24a06;
+  --orange-light: #a84306;
+  --red: #b3261e;
+  --yellow: #9a5c00;
+  --yellow-light: #7d4a00;
+  --ink: #fffaf3;
 }
 
 * {
@@ -28,7 +28,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  padding: 2rem 1rem;
+  padding: 0 1rem 3rem;
   background: var(--bg);
   color: var(--text);
   position: relative;
@@ -36,9 +36,25 @@ body {
 }
 
 h1 {
-  font-size: 2rem;
-  letter-spacing: 1px;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  letter-spacing: 0.3px;
   color: var(--yellow);
+}
+
+.back {
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.back:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
 }
 
 .completed-badge {
@@ -47,7 +63,7 @@ h1 {
   gap: 0.4rem;
   padding: 0.35rem 1rem;
   border: 1px solid var(--yellow);
-  border-radius: 999px;
+  border-radius: 0;
   background: rgba(255, 195, 0, 0.12);
   color: var(--yellow);
   font-size: 0.85rem;
@@ -73,7 +89,7 @@ h1 {
   max-width: 500px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 1.25rem;
+  border-radius: 0;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
 }
@@ -116,7 +132,7 @@ h1 {
 .buy-btn {
   padding: 0.5rem 1.1rem;
   border: none;
-  border-radius: 0.6rem;
+  border-radius: 0;
   cursor: pointer;
   font-weight: 700;
   background: var(--yellow);
@@ -142,7 +158,7 @@ h1 {
   border: 1px solid var(--border);
   background: transparent;
   color: var(--muted);
-  border-radius: 0.6rem;
+  border-radius: 0;
   cursor: pointer;
   font-size: 0.9rem;
 }
@@ -185,7 +201,7 @@ h1 {
 .click-btn {
   width: 180px;
   height: 180px;
-  border-radius: 50%;
+  border-radius: 0;
   border: none;
   cursor: pointer;
   background: var(--orange);
@@ -209,7 +225,7 @@ h1 {
   max-width: 500px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 1.25rem;
+  border-radius: 0;
   padding: 1.25rem;
   backdrop-filter: blur(10px);
 }
@@ -230,7 +246,7 @@ h1 {
 
 .achievement {
   padding: 0.3rem 0.75rem;
-  border-radius: 999px;
+  border-radius: 0;
   font-size: 0.8rem;
   font-weight: 600;
   background: rgba(255, 138, 60, 0.1);
@@ -248,7 +264,7 @@ h1 {
   position: fixed;
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 0;
   background: var(--yellow);
   color: var(--ink);
   font-weight: 900;
@@ -284,7 +300,7 @@ h1 {
   border: 1px solid var(--border);
   color: var(--yellow-light);
   padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
+  border-radius: 0;
   font-weight: 600;
   opacity: 0;
   pointer-events: none;
@@ -298,58 +314,37 @@ h1 {
 }
 
 @media (min-width: 900px) {
-  body {
-    justify-content: center;
-  }
-
   .layout {
     display: grid;
-    grid-template-columns: 420px 1fr;
+    grid-template-columns: 1fr 420px;
     align-items: start;
     gap: 2rem;
   }
 
   .play-area {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 1;
     padding-top: 1rem;
   }
 
   .shop {
-    grid-column: 1;
+    grid-column: 2;
     grid-row: 1;
     max-width: none;
   }
 }
 
-/* ---------- Light theme ---------- */
+/* ---------- Surface colours ---------- */
 
-[data-theme="light"] {
-  color-scheme: light;
-  --bg: #fff7ee;
-  --surface: rgba(150, 68, 18, 0.07);
-  --border: rgba(150, 68, 18, 0.22);
-  --border-soft: rgba(150, 68, 18, 0.14);
-  --text: #2f1608;
-  --muted: #7a4a2c;
-  --dim: #8a6a52;
-  --orange: #c24a06;
-  --orange-light: #a84306;
-  --red: #b3261e;
-  --yellow: #9a5c00;
-  --yellow-light: #7d4a00;
-  --ink: #fffaf3;
-}
-
-[data-theme="light"] .buy-btn:disabled {
+.buy-btn:disabled {
   background: #f0ddc9;
 }
 
-[data-theme="light"] .achievement {
+.achievement {
   background: rgba(150, 68, 18, 0.08);
 }
 
-[data-theme="light"] .toast {
+.toast {
   background: #fffdf9;
   color: var(--text);
   box-shadow: 0 12px 30px rgba(80, 38, 12, 0.18);
@@ -359,5 +354,67 @@ h1 {
   * {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: calc(100% + 2rem);
+  max-width: none;
+  margin: 0 -1rem;
+  padding: 0.75rem max(1rem, calc((100% + 2rem - 1200px) / 2));
+  background: #000000;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar h1 {
+  color: #ffffff;
+}
+
+.topbar .back {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.topbar .back:hover {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.topbar .reset-btn {
+  margin-top: 0;
+  width: auto;
+  padding: 0.55rem 1.2rem;
+  border-color: transparent;
+  background: var(--orange);
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.topbar .reset-btn:hover {
+  background: var(--orange-light);
+  border-color: transparent;
+}
+
+@media (max-width: 480px) {
+  .topbar {
+    justify-content: center;
+  }
+
+  .topbar h1 {
+    order: -1;
+    width: 100%;
+    text-align: center;
   }
 }

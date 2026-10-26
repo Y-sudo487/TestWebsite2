@@ -36,7 +36,7 @@ const defaultStats = {
   bestStreak: 0
 };
 
-function loadStats() {
+function LoadStats() {
   try {
     const saved = JSON.parse(localStorage.getItem(STATS_KEY));
     if (saved) {
@@ -62,7 +62,7 @@ function loadStats() {
   return { ...defaultStats, best: {}, played: [] };
 }
 
-function saveStats() {
+function SaveStats() {
   try {
     localStorage.setItem(STATS_KEY, JSON.stringify(stats));
   } catch (e) {
@@ -70,27 +70,27 @@ function saveStats() {
   }
 }
 
-const stats = loadStats();
+const stats = LoadStats();
 
 const achievements = [
-  { id: 'firstAnswer', label: 'First Answer', check: v => v.correct >= 1 },
-  { id: 'tenCorrect', label: '10 Correct', check: v => v.correct >= 10 },
-  { id: 'twentyFiveCorrect', label: '25 Correct', check: v => v.correct >= 25 },
-  { id: 'fiftyCorrect', label: '50 Correct', check: v => v.correct >= 50 },
-  { id: 'streak10', label: 'Streak 10', check: v => v.bestStreak >= 10 },
-  { id: 'streak20', label: 'Streak 20', check: v => v.bestStreak >= 20 },
-  { id: 'streak30', label: 'Streak 30', check: v => v.bestStreak >= 30 },
-  { id: 'perfectTen', label: 'Perfect 10', check: v => v.correct >= 10 && v.wrong === 0 },
-  { id: 'perfect20', label: 'Perfect 20', check: v => v.correct >= 20 && v.wrong === 0 },
-  { id: 'blitz10', label: 'Blitz 10', check: v => v.variant === 'blitz' && v.correct >= 10 },
-  { id: 'marathon40', label: 'Marathon 40', check: v => v.variant === 'marathon' && v.correct >= 40 },
-  { id: 'multiply20', label: 'Multiply 20', check: v => v.variant === 'multiply' && v.correct >= 20 },
-  { id: 'addsub30', label: 'Add / Sub 30', check: v => v.variant === 'addsub' && v.correct >= 30 },
-  { id: 'best25', label: 'Best 25', check: v => v.bestMax >= 25 },
-  { id: 'best50', label: 'Best 50', check: v => v.bestMax >= 50 },
-  { id: 'allModes', label: 'All Modes', check: v => v.played.length >= 5 },
-  { id: 'century', label: 'Century', check: v => v.totalCorrect >= 100 },
-  { id: 'rounds10', label: '10 Rounds', check: v => v.rounds >= 10 }
+  { id: 'firstAnswer', label: 'First Answer', description: 'Answer your first problem correctly.', check: v => v.correct >= 1 },
+  { id: 'tenCorrect', label: '10 Correct', description: 'Answer 10 problems correctly in one round.', check: v => v.correct >= 10 },
+  { id: 'twentyFiveCorrect', label: '25 Correct', description: 'Answer 25 problems correctly in one round.', check: v => v.correct >= 25 },
+  { id: 'fiftyCorrect', label: '50 Correct', description: 'Answer 50 problems correctly in one round.', check: v => v.correct >= 50 },
+  { id: 'streak10', label: 'Streak 10', description: 'Get 10 correct answers in a row.', check: v => v.bestStreak >= 10 },
+  { id: 'streak20', label: 'Streak 20', description: 'Get 20 correct answers in a row.', check: v => v.bestStreak >= 20 },
+  { id: 'streak30', label: 'Streak 30', description: 'Get 30 correct answers in a row.', check: v => v.bestStreak >= 30 },
+  { id: 'perfectTen', label: 'Perfect 10', description: 'Answer 10 correctly in one round without a wrong answer.', check: v => v.correct >= 10 && v.wrong === 0 },
+  { id: 'perfect20', label: 'Perfect 20', description: 'Answer 20 correctly in one round without a wrong answer.', check: v => v.correct >= 20 && v.wrong === 0 },
+  { id: 'blitz10', label: 'Blitz 10', description: 'Answer 10 correctly in a Blitz round.', check: v => v.variant === 'blitz' && v.correct >= 10 },
+  { id: 'marathon40', label: 'Marathon 40', description: 'Answer 40 correctly in a Marathon round.', check: v => v.variant === 'marathon' && v.correct >= 40 },
+  { id: 'multiply20', label: 'Multiply 20', description: 'Answer 20 correctly in a Multiply round.', check: v => v.variant === 'multiply' && v.correct >= 20 },
+  { id: 'addsub30', label: 'Add / Sub 30', description: 'Answer 30 correctly in an Add / Sub round.', check: v => v.variant === 'addsub' && v.correct >= 30 },
+  { id: 'best25', label: 'Best 25', description: 'Set a personal best of 25 or more in any mode.', check: v => v.bestMax >= 25 },
+  { id: 'best50', label: 'Best 50', description: 'Set a personal best of 50 or more in any mode.', check: v => v.bestMax >= 50 },
+  { id: 'allModes', label: 'All Modes', description: 'Play a round in all five modes.', check: v => v.played.length >= 5 },
+  { id: 'century', label: 'Century', description: 'Answer 100 problems correctly across all rounds.', check: v => v.totalCorrect >= 100 },
+  { id: 'rounds10', label: '10 Rounds', description: 'Play 10 rounds.', check: v => v.rounds >= 10 }
 ];
 
 let variantKey = 'classic';
@@ -104,53 +104,53 @@ let timeLeft = variant.seconds;
 let running = false;
 let tickId = null;
 
-function randomInt(min, max) {
+function RandomInt(min, max) {
   return min + Math.floor(Math.random() * (max - min + 1));
 }
 
-function makeProblem() {
-  const op = variant.ops[randomInt(0, variant.ops.length - 1)];
+function MakeProblem() {
+  const op = variant.ops[RandomInt(0, variant.ops.length - 1)];
 
   if (op === '+') {
-    const a = randomInt(2, 20);
-    const b = randomInt(2, 20);
+    const a = RandomInt(2, 20);
+    const b = RandomInt(2, 20);
     return { text: `${a} + ${b}`, answer: a + b };
   }
 
   if (op === '-') {
-    const a = randomInt(10, 30);
-    const b = randomInt(2, a - 1);
+    const a = RandomInt(10, 30);
+    const b = RandomInt(2, a - 1);
     return { text: `${a} − ${b}`, answer: a - b };
   }
 
-  const a = randomInt(2, 12);
-  const b = randomInt(2, 12);
+  const a = RandomInt(2, 12);
+  const b = RandomInt(2, 12);
   return { text: `${a} × ${b}`, answer: a * b };
 }
 
-function nextProblem() {
-  problem = makeProblem();
+function NextProblem() {
+  problem = MakeProblem();
   problemEl.textContent = problem.text;
 }
 
-function startTimer() {
+function StartTimer() {
   tickId = setInterval(() => {
     timeLeft -= 1;
     timeEl.textContent = `${timeLeft}s`;
 
-    if (timeLeft <= 0) endRound();
+    if (timeLeft <= 0) EndRound();
   }, 1000);
 }
 
-function stopTimer() {
+function StopTimer() {
   clearInterval(tickId);
   tickId = null;
 }
 
-function startRound(nextVariant = variantKey) {
+function StartRound(nextVariant = variantKey) {
   if (!VARIANTS[nextVariant]) nextVariant = 'classic';
 
-  stopTimer();
+  StopTimer();
   variantKey = nextVariant;
   variant = VARIANTS[variantKey];
 
@@ -163,7 +163,7 @@ function startRound(nextVariant = variantKey) {
 
   if (!stats.played.includes(variantKey)) {
     stats.played.push(variantKey);
-    saveStats();
+    SaveStats();
   }
 
   chips.forEach(chip => {
@@ -171,27 +171,27 @@ function startRound(nextVariant = variantKey) {
   });
 
   scoreEl.textContent = '0';
-  bestEl.textContent = stats.best[variantKey] || 0;
+  bestEl.textContent = FormatNumber(stats.best[variantKey] || 0);
   streakEl.textContent = '0';
   timeEl.textContent = `${variant.seconds}s`;
 
-  hideOverlay();
+  HideOverlay();
   startBtn.textContent = 'Restart';
-  nextProblem();
+  NextProblem();
 
   answerEl.value = '';
   answerEl.disabled = false;
   answerEl.classList.remove('is-wrong');
   answerEl.focus();
 
-  checkAchievements();
-  startTimer();
+  CheckAchievements();
+  StartTimer();
 }
 
-function endRound() {
+function EndRound() {
   if (!running) return;
   running = false;
-  stopTimer();
+  StopTimer();
 
   answerEl.disabled = true;
   answerEl.classList.remove('is-wrong');
@@ -203,22 +203,22 @@ function endRound() {
   stats.rounds += 1;
   stats.totalCorrect += correct;
   stats.bestStreak = Math.max(stats.bestStreak, bestStreak);
-  saveStats();
+  SaveStats();
 
-  bestEl.textContent = stats.best[variantKey] || 0;
-  checkAchievements();
+  bestEl.textContent = FormatNumber(stats.best[variantKey] || 0);
+  CheckAchievements();
 
   const attempts = correct + wrong;
   const accuracy = attempts ? Math.round((correct / attempts) * 100) : 0;
-  showOverlay(
+  ShowOverlay(
     'Time!',
-    `${variant.label} · ${correct} correct · ${accuracy}% accuracy · best ${stats.best[variantKey] || 0}`,
+    `${variant.label} · ${FormatNumber(correct)} correct · ${FormatNumber(accuracy)}% accuracy · best ${FormatNumber(stats.best[variantKey] || 0)}`,
     'Play again',
-    () => startRound(variantKey)
+    () => StartRound(variantKey)
   );
 }
 
-function submitAnswer(event) {
+function SubmitAnswer(event) {
   event.preventDefault();
   if (!running || !answerEl.value.trim()) return;
 
@@ -229,10 +229,10 @@ function submitAnswer(event) {
     correct += 1;
     streak += 1;
     bestStreak = Math.max(bestStreak, streak);
-    scoreEl.textContent = correct;
-    streakEl.textContent = streak;
-    checkAchievements();
-    nextProblem();
+    scoreEl.textContent = FormatNumber(correct);
+    streakEl.textContent = FormatNumber(streak);
+    CheckAchievements();
+    NextProblem();
     return;
   }
 
@@ -244,7 +244,7 @@ function submitAnswer(event) {
   answerEl.classList.add('is-wrong');
 }
 
-function checkAchievements() {
+function CheckAchievements() {
   const view = {
     correct,
     wrong,
@@ -261,22 +261,22 @@ function checkAchievements() {
     if (!stats.unlocked.includes(a.id) && a.check(view)) {
       stats.unlocked.push(a.id);
       changed = true;
-      showToast(`Achievement unlocked: ${a.label}`);
+      ShowToast(`Achievement unlocked: ${a.label}`);
     }
   });
 
   if (changed) {
-    saveStats();
-    renderAchievements();
-    checkCompletion();
+    SaveStats();
+    RenderAchievements();
+    CheckCompletion();
   }
 }
 
-function allAchievementsUnlocked() {
+function AllAchievementsUnlocked() {
   return achievements.every(a => stats.unlocked.includes(a.id));
 }
 
-function hasCompletedBadge() {
+function HasCompletedBadge() {
   try {
     return localStorage.getItem(COMPLETED_KEY) === '1';
   } catch (e) {
@@ -284,8 +284,8 @@ function hasCompletedBadge() {
   }
 }
 
-function checkCompletion() {
-  if (hasCompletedBadge() || !allAchievementsUnlocked()) return;
+function CheckCompletion() {
+  if (HasCompletedBadge() || !AllAchievementsUnlocked()) return;
 
   try {
     localStorage.setItem(COMPLETED_KEY, '1');
@@ -294,29 +294,26 @@ function checkCompletion() {
   }
 
   completedBadgeEl.hidden = false;
-  saveStats();
-  showToast('All achievements unlocked — 100% complete! Redirecting…');
+  SaveStats();
+  ShowToast('All achievements unlocked - 100% complete! Redirecting…');
   setTimeout(() => { window.location.href = '../index.html'; }, 3000);
 }
 
-function renderAchievements() {
+function RenderAchievements() {
   achievementListEl.innerHTML = '';
   achievements.forEach(a => {
-    const el = document.createElement('span');
-    el.className = 'achievement' + (stats.unlocked.includes(a.id) ? ' unlocked' : '');
-    el.textContent = a.label;
-    achievementListEl.appendChild(el);
+    achievementListEl.appendChild(CreateAchievementButton(a, stats.unlocked.includes(a.id)));
   });
 }
 
-function showToast(message) {
+function ShowToast(message) {
   toastEl.textContent = message;
   toastEl.classList.add('show');
-  clearTimeout(showToast._timer);
-  showToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
+  clearTimeout(ShowToast._timer);
+  ShowToast._timer = setTimeout(() => toastEl.classList.remove('show'), 2000);
 }
 
-function showOverlay(title, summary, primaryLabel, primaryAction) {
+function ShowOverlay(title, summary, primaryLabel, primaryAction) {
   overlayTitleEl.textContent = title;
   overlaySummaryEl.textContent = summary;
   primaryBtn.textContent = primaryLabel;
@@ -325,7 +322,7 @@ function showOverlay(title, summary, primaryLabel, primaryAction) {
   primaryBtn.focus();
 }
 
-function hideOverlay() {
+function HideOverlay() {
   overlayEl.hidden = true;
 }
 
@@ -334,16 +331,16 @@ answerEl.addEventListener('input', () => {
   if (digits !== answerEl.value) answerEl.value = digits;
 });
 
-answerForm.addEventListener('submit', submitAnswer);
-startBtn.addEventListener('click', () => startRound());
+answerForm.addEventListener('submit', SubmitAnswer);
+startBtn.addEventListener('click', () => StartRound());
 chips.forEach(chip => {
-  chip.addEventListener('click', () => startRound(chip.dataset.variant));
+  chip.addEventListener('click', () => StartRound(chip.dataset.variant));
 });
 secondaryBtn.addEventListener('click', () => {
   window.location.href = '../index.html';
 });
 
-if (hasCompletedBadge()) completedBadgeEl.hidden = false;
+if (HasCompletedBadge()) completedBadgeEl.hidden = false;
 
-bestEl.textContent = stats.best[variantKey] || 0;
-renderAchievements();
+bestEl.textContent = FormatNumber(stats.best[variantKey] || 0);
+RenderAchievements();
