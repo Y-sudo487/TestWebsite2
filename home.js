@@ -1,9 +1,7 @@
 const completedBadges = [
-  ['clicker', 'clickerGameCompleted'],
   ['memory', 'memoryMatchCompleted'],
   ['merge', 'numberMergeCompleted'],
   ['sudoku', 'untitledSudokuCompleted'],
-  ['math', 'untitledMathSprintCompleted'],
   ['tictactoe', 'ticTacToeCompleted']
 ];
 
