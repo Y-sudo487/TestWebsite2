@@ -1,5 +1,3 @@
-/* ---------- Achievement buttons ---------- */
-
 .achievement {
   appearance: none;
   -webkit-appearance: none;
@@ -11,8 +9,6 @@
 .achievement:hover {
   border-color: var(--border-strong, rgba(150, 68, 18, 0.45));
 }
-
-/* ---------- Achievement dialog ---------- */
 
 .achievement-dialog-open {
   overflow: hidden;
