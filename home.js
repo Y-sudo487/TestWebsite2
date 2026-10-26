@@ -2,7 +2,6 @@ const completedBadges = [
   ['memory', 'memoryMatchCompleted'],
   ['merge', 'numberMergeCompleted'],
   ['sudoku', 'untitledSudokuCompleted'],
-  ['tictactoe', 'ticTacToeCompleted']
 ];
 
 function IsCompleted(key) {
